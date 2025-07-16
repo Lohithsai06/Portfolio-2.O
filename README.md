@@ -2,7 +2,7 @@
 
 A modern, dark-themed personal portfolio website showcasing my development skills and projects with a neon-glow aesthetic.
 
-![Portfolio Preview](public/profile.JPG)
+![Portfolio Preview](public/Logo/favicon.ico.JPG)
 
 ## ✨ Features
 
