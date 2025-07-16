@@ -7,7 +7,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-};
+,
   images: {
     domains: ['media3.giphy.com'],
   },
