@@ -12,7 +12,7 @@ const skillCategories = [
       { name: "HTML5", gif: "/gifs/HTML5.gif" },
       { name: "CSS3", gif: "/gifs/CSS3.gif" },
       { name: "Git", gif: "/gifs/Git.gif" },
-      { name: "GitHub", gif: "/gifs/github.gif" },
+      { name: "GitHub", gif: "/gifs/Github.gif" },
       { name: "VS Code", gif: "/gifs/vscode.gif" },
     ],
   },
@@ -27,7 +27,7 @@ const skillCategories = [
       { name: "Python", gif: "/gifs/Python.gif" },
       { name: "REST APIs", gif: "/gifs/rest-apis.gif" },
       { name: "Networking", gif: "/gifs/network.gif" },
-      { name: "Docker", gif: "/gifs/docker.gif" },
+      { name: "Docker", gif: "/gifs/Docker.gif" },
     ],
   },
   {
