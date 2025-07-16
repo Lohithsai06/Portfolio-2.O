@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Github, Linkedin, Download } from "lucide-react";
+import {  Download } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Typewriter } from "react-simple-typewriter";
@@ -13,6 +13,7 @@ const Hero = () => {
       className="bg-[#0a0f24] text-white min-h-[80vh] flex flex-col items-center justify-start pt-16 md:pt-32 p-4"
     >
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center lg:justify-between">
+        {/* Left Text Section */}
         <motion.div
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -58,7 +59,7 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        {/* Profile image section */}
+        {/* Right Image Section */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -67,7 +68,7 @@ const Hero = () => {
         >
           <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96">
             <Image
-              src="/assets/profile.jpg" // ✅ Make sure this file is inside /public/assets/
+              src="/profile.jpg" // ✅ Now correct path
               alt="Lohith Sai G portrait"
               width={400}
               height={400}
