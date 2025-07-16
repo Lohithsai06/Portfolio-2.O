@@ -1,3 +1,80 @@
+# Portfolio 2.0 🚀
+
+A modern, dark-themed personal portfolio website showcasing my development skills and projects with a neon-glow aesthetic.
+
+![Portfolio Preview](public/profile.JPG)
+
+## ✨ Features
+
+- **Stunning Dark Theme** with neon accents and modern UI design
+- **Fully Responsive** layout that works on all devices
+- **Smooth Animations** powered by Framer Motion
+- **Automatic GitHub Projects** fetching and display
+- **Interactive Skills Section** with animated GIFs
+- **Custom Theme Toggle** for user preference
+- **Modern Tech Stack** built with Next.js 14 and Tailwind CSS
+- **Optimized Performance** with Next.js app router and image optimization
+
+## 🛠️ Built With
+
+- [Next.js](https://nextjs.org/) - React framework for production
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
+- [Framer Motion](https://www.framer.com/motion/) - Animation library
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- GitHub API - For automatic project fetching
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+```bash
+git clone [your-repo-url]
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Run the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 📂 Project Structure
+
+- `src/app/*` - Main application pages using Next.js 14 App Router
+- `src/components/*` - Reusable UI components
+- `src/sections/*` - Major section components of the portfolio
+- `src/lib/*` - Utility functions and API handlers
+- `public/*` - Static assets including GIFs and images
+
+## 🎨 Features in Detail
+
+- **Dynamic Projects Section**: Automatically fetches and displays your latest GitHub projects
+- **Animated Skills**: Custom GIF animations for each technology skill
+- **Responsive Design**: Seamlessly adapts to mobile, tablet, and desktop views
+- **Performance Optimized**: Fast loading times with Next.js optimizations
+- **Modern UI**: Dark theme with neon accents for a contemporary look
+- **Smooth Transitions**: Page transitions and hover effects using Framer Motion
+
+## 📱 Environment Setup
+
+Create a `.env.local` file in the root directory:
+
+```env
+GITHUB_TOKEN=your_github_token_here
+```
+
+## 🌐 Deployment
+
+The portfolio is optimized for deployment on [Vercel](https://vercel.com). Simply connect your GitHub repository to Vercel for automatic deployments.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
