@@ -1,17 +1,16 @@
 import type { NextConfig } from "next";
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
-,
   images: {
     domains: ['media3.giphy.com'],
   },
-  /* config options here */
+  // Additional config options can go here
 };
 
 export default nextConfig;
