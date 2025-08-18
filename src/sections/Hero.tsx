@@ -53,7 +53,7 @@ const Hero = () => {
                 whileHover={{ scale: 1.05, boxShadow: "0 0 20px #00FFFF" }}
                 className="flex items-center mx-auto lg:mx-0 bg-transparent border border-[#00FFFF] text-[#00FFFF] py-3 px-8 rounded-full transition-all duration-300"
               >
-                <Download className="mr-2" /> Download CV
+                <Download className="mr-2" /> Download Resume
               </motion.button>
             </a>
           </div>

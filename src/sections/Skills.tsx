@@ -12,7 +12,7 @@ const skillCategories = [
       { name: "HTML5", gif: "/gifs/HTML5.gif" },
       { name: "CSS3", gif: "/gifs/CSS3.gif" },
       { name: "Git", gif: "/gifs/Git.gif" },
-      { name: "GitHub", gif: "/gifs/Github.gif" },
+      { name: "GitHub", gif: "/gifs/GitHub.gif" },
       { name: "VS Code", gif: "/gifs/vscode.gif" },
     ],
   },
