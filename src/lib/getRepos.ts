@@ -5,7 +5,7 @@ export const getRepos = async () => {
       headers: {
         Accept: 'application/vnd.github.v3+json',
       },
-      next: { revalidate: 3600 }, // Revalidate data every hour
+      next: { revalidate: 300 }, // Revalidate data every hour
     },
   );
   if (!response.ok) {
