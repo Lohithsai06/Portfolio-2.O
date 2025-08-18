@@ -48,7 +48,7 @@ const Hero = () => {
             connections on the backend side.
           </motion.p>
           <div className="mt-8">
-            <a href="/Lohith Resume.pdf" download>
+            <a href="/resume.pdf" download>
               <motion.button
                 whileHover={{ scale: 1.05, boxShadow: "0 0 20px #00FFFF" }}
                 className="flex items-center mx-auto lg:mx-0 bg-transparent border border-[#00FFFF] text-[#00FFFF] py-3 px-8 rounded-full transition-all duration-300"
