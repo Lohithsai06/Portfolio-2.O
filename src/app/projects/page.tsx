@@ -10,8 +10,9 @@ export default async function ProjectsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0D0D0D] text-white">
+    <div className="w-full py-4">
       <Projects repos={repos} />
-    </main>
+    </div>
   );
 }
+

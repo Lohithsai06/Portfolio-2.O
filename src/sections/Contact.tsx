@@ -1,81 +1,320 @@
-'use client'
-import React from 'react';
-import Image from 'next/image';
-import { motion } from 'framer-motion';
+"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  Github,
+  Linkedin,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    projectType: "",
+    message: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (error) setError(null);
+    if (submitted) setSubmitted(false);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedMessage = formData.message.trim();
+
+    if (!trimmedName || !trimmedEmail || !trimmedMessage) {
+      setError("Please fill in your name, email address, and message.");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmedEmail)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    const subject = encodeURIComponent(
+      formData.projectType
+        ? `${formData.projectType} — Inquiry from ${trimmedName}`
+        : `Portfolio Inquiry from ${trimmedName}`
+    );
+    const body = encodeURIComponent(
+      `Name: ${trimmedName}\nEmail: ${trimmedEmail}\nTopic: ${
+        formData.projectType || "General Inquiry"
+      }\n\nMessage:\n${trimmedMessage}`
+    );
+
+    window.location.href = `mailto:Lohithsai0808@gmail.com?subject=${subject}&body=${body}`;
+    setSubmitted(true);
+  };
+
   return (
-    <section id="contact" className="bg-gray-900 text-white py-20 min-h-screen">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-8">
-            <Image
-              src="/gifs/coding.gif"
-              alt="Coding GIF"
-              width={300}
-              height={300}
-              className="mx-auto"
-            />
-          </div>
-          <h2 className="text-4xl font-bold mb-4">Contact Me</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ y: -5, boxShadow: "0 0 30px #00FFFF" }}
-              className="bg-gray-800/50 backdrop-blur-sm border border-[#00FFFF]/30 rounded-2xl p-6 shadow-[0_0_20px_#00BFFF] flex flex-col items-center justify-center text-center"
-            >
-              <a href="mailto:Lohithsai0808@gmail.com" title="Lohithsai0808@gmail.com" className="text-white font-bold py-4 px-4 transition-all duration-300 transform hover:scale-105">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-envelope-fill" viewBox="0 0 16 16">
-                  <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.589L16 11.801V4.697l-5.803 3.543Z"/>
-                </svg>
+    <section id="contact" className="w-full px-3 sm:px-6 py-2.5">
+      <div className="max-w-[1140px] mx-auto glass-panel rounded-[32px] p-6 sm:p-10 lg:p-12 relative overflow-hidden">
+        {/* Decorative soft lavender-blue orb in bottom-right matching reference */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none hidden lg:flex absolute -bottom-10 -right-10 w-56 h-56 rounded-full bg-gradient-to-tr from-indigo-300/45 via-purple-200/40 to-white/70 border border-white/80 shadow-[0_20px_60px_rgba(99,102,241,0.18)] backdrop-blur-xl items-center justify-center"
+        >
+          <div className="w-36 h-36 rounded-full bg-gradient-to-br from-indigo-400/30 via-violet-300/30 to-white/60 border border-white/70" />
+        </div>
+
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+          {/* Left Column: Contact Info & Social Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.45 }}
+            className="lg:col-span-5 space-y-6"
+          >
+            <div>
+              <span className="inline-block text-xs font-semibold tracking-[0.15em] uppercase text-indigo-500 mb-2">
+                LET&apos;S CONNECT
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">
+                Have a project in mind?
+                <br />
+                Let&apos;s create something amazing together.
+              </h2>
+              <p className="mt-3 text-xs sm:text-sm text-slate-500 leading-relaxed">
+                Reach out for full-stack development, RESTful API architecture,
+                LAN-based backend systems, or engineering collaborations.
+              </p>
+            </div>
+
+            {/* Contact Details List */}
+            <div className="space-y-3.5 pt-1">
+              <a
+                href="mailto:Lohithsai0808@gmail.com"
+                className="flex items-center gap-3.5 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-white/90 border border-slate-200/80 shadow-2xs flex items-center justify-center text-slate-700 group-hover:text-indigo-600 group-hover:border-indigo-200 transition-colors shrink-0">
+                  <Mail className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-[11px] font-medium text-slate-400">
+                    Email
+                  </p>
+                  <p className="text-xs sm:text-sm font-semibold text-slate-800 group-hover:text-indigo-600 transition-colors break-all">
+                    Lohithsai0808@gmail.com
+                  </p>
+                </div>
               </a>
-              <p className="mt-2 text-sm">Lohithsai0808@gmail.com</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ y: -5, boxShadow: "0 0 30px #00FFFF" }}
-              className="bg-gray-800/50 backdrop-blur-sm border border-[#00FFFF]/30 rounded-2xl p-6 shadow-[0_0_20px_#00BFFF] flex flex-col items-center justify-center text-center"
-            >
-              <a href="tel:+919380324074" className="text-white font-bold py-4 px-4 transition-all duration-300 transform hover:scale-105">
-                <Image src="/gifs/phone.gif" alt="Phone" width={50} height={50} />
+
+              <a
+                href="tel:+919380324074"
+                className="flex items-center gap-3.5 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-white/90 border border-slate-200/80 shadow-2xs flex items-center justify-center text-slate-700 group-hover:text-indigo-600 group-hover:border-indigo-200 transition-colors shrink-0">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-[11px] font-medium text-slate-400">
+                    Phone
+                  </p>
+                  <p className="text-xs sm:text-sm font-semibold text-slate-800 group-hover:text-indigo-600 transition-colors">
+                    +91 9380324074
+                  </p>
+                </div>
               </a>
-              <p className="mt-2 text-sm">9380324074</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ y: -5, boxShadow: "0 0 30px #00FFFF" }}
-              className="bg-gray-800/50 backdrop-blur-sm border border-[#00FFFF]/30 rounded-2xl p-6 shadow-[0_0_20px_#00BFFF] flex flex-col items-center justify-center text-center"
-            >
-              <a href="https://github.com/Lohithsai06" target="_blank" rel="noopener noreferrer" title="Lohithsai06" className="text-white font-bold py-4 px-4 transition-all duration-300 transform hover:scale-105">
-                <Image src="/gifs/GitHub.gif" alt="GitHub" width={50} height={50} />
+
+              <div className="flex items-center gap-3.5">
+                <div className="w-10 h-10 rounded-xl bg-white/90 border border-slate-200/80 shadow-2xs flex items-center justify-center text-slate-700 shrink-0">
+                  <MapPin className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-[11px] font-medium text-slate-400">
+                    Location
+                  </p>
+                  <p className="text-xs sm:text-sm font-semibold text-slate-800">
+                    Bangalore, Karnataka, India
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Profiles Row */}
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <a
+                href="https://github.com/Lohithsai06"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 glass-pill hover:bg-white rounded-full px-4 py-2 text-xs font-semibold text-slate-700 hover:text-slate-900 transition-all hover:-translate-y-0.5"
+              >
+                <Github className="w-3.5 h-3.5" />
+                <span>Lohithsai06</span>
               </a>
-              <p className="mt-2 text-sm">Lohithsai06</p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              whileHover={{ y: -5, boxShadow: "0 0 30px #00FFFF" }}
-              className="bg-gray-800/50 backdrop-blur-sm border border-[#00FFFF]/30 rounded-2xl p-6 shadow-[0_0_20px_#00BFFF] flex flex-col items-center justify-center text-center"
-            >
-              <a href="https://linkedin.com/in/lohith-sai-54b44437b" target="_blank" rel="noopener noreferrer" className="text-white font-bold py-4 px-4 transition-all duration-300 transform hover:scale-105">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-linkedin" viewBox="0 0 16 16">
-                  <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
-                </svg>
+              <a
+                href="https://linkedin.com/in/lohith-sai-54b44437b"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 glass-pill hover:bg-white rounded-full px-4 py-2 text-xs font-semibold text-slate-700 hover:text-indigo-600 transition-all hover:-translate-y-0.5"
+              >
+                <Linkedin className="w-3.5 h-3.5 text-indigo-600" />
+                <span>LinkedIn</span>
               </a>
-              <p className="mt-2 text-sm">www.linkedin.com/in/lohith-sai</p>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Contact Form */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.45, delay: 0.1 }}
+            className="lg:col-span-7"
+          >
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+              className="glass-card rounded-[26px] p-5 sm:p-7 space-y-4 max-w-xl"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="contact-name"
+                    className="sr-only"
+                  >
+                    Your Name
+                  </label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Your Name"
+                    className="w-full rounded-xl bg-white/85 border border-white/95 px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-2xs focus:outline-none focus:ring-2 focus:ring-indigo-400/60 focus:bg-white transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="contact-email"
+                    className="sr-only"
+                  >
+                    Your Email
+                  </label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Your Email"
+                    className="w-full rounded-xl bg-white/85 border border-white/95 px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-2xs focus:outline-none focus:ring-2 focus:ring-indigo-400/60 focus:bg-white transition-all"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="contact-project"
+                  className="sr-only"
+                >
+                  Your Project
+                </label>
+                <select
+                  id="contact-project"
+                  name="projectType"
+                  value={formData.projectType}
+                  onChange={handleChange}
+                  className="w-full rounded-xl bg-white/85 border border-white/95 px-4 py-3 text-xs sm:text-sm text-slate-700 shadow-2xs focus:outline-none focus:ring-2 focus:ring-indigo-400/60 focus:bg-white transition-all"
+                >
+                  <option value="">Your Project / Topic</option>
+                  <option value="Full-Stack Web Application">
+                    Full-Stack Web Application
+                  </option>
+                  <option value="Backend & REST APIs">
+                    Backend &amp; REST APIs
+                  </option>
+                  <option value="LAN & Network Systems">
+                    LAN &amp; Network Systems
+                  </option>
+                  <option value="Software Engineering Opportunity">
+                    Software Engineering Opportunity
+                  </option>
+                  <option value="General Inquiry">General Inquiry</option>
+                </select>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="contact-message"
+                  className="sr-only"
+                >
+                  Your Message
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  rows={4}
+                  required
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Your Message"
+                  className="w-full rounded-xl bg-white/85 border border-white/95 px-4 py-3 text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 shadow-2xs focus:outline-none focus:ring-2 focus:ring-indigo-400/60 focus:bg-white transition-all resize-none"
+                />
+              </div>
+
+              {error && (
+                <div
+                  role="alert"
+                  className="flex items-center gap-2 rounded-xl bg-rose-50 border border-rose-200/80 px-3.5 py-2.5 text-xs text-rose-700"
+                >
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              {submitted && !error && (
+                <div
+                  role="status"
+                  className="flex items-center gap-2 rounded-xl bg-emerald-50 border border-emerald-200/80 px-3.5 py-2.5 text-xs text-emerald-700"
+                >
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>
+                    Opening your email client to send your message to{" "}
+                    <strong>Lohithsai0808@gmail.com</strong>.
+                  </span>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="w-full rounded-full bg-slate-900 hover:bg-slate-800 text-white py-3.5 px-6 text-xs sm:text-sm font-semibold shadow-[0_10px_25px_-5px_rgba(15,23,42,0.35)] hover:shadow-[0_14px_30px_-5px_rgba(15,23,42,0.45)] flex items-center justify-center gap-2 transition-all duration-200 cursor-pointer"
+              >
+                <span>Send Message</span>
+                <Send className="w-3.5 h-3.5" />
+              </button>
+            </form>
+          </motion.div>
         </div>
       </div>
     </section>
   );
 };
 
-export default Contact;
+export default Contact;

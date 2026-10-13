@@ -1,16 +1,23 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
-    domains: ['media3.giphy.com'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "media3.giphy.com",
+      },
+    ],
   },
-  // Additional config options can go here
+  ...(process.env.ALLOWED_DEV_ORIGINS
+    ? {
+        allowedDevOrigins: process.env.ALLOWED_DEV_ORIGINS.split(",").map((s) =>
+          s.trim()
+        ),
+      }
+    : {}),
 };
 
 export default nextConfig;
+
+

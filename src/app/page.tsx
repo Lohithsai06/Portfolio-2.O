@@ -1,9 +1,28 @@
 import Hero from "@/sections/Hero";
+import About from "@/sections/About";
+import Skills from "@/sections/Skills";
+import Projects from "@/sections/Projects";
+import Process from "@/sections/Process";
+import Contact from "@/sections/Contact";
+import { getRepos } from "@/lib/getRepos";
 
-export default function Home() {
+export default async function Home() {
+  let repos = [];
+  try {
+    repos = await getRepos();
+  } catch (error) {
+    console.error("Failed to fetch repositories in Home:", error);
+  }
+
   return (
-    <main className="min-h-screen bg-[#0a0f24] text-white">
+    <div className="w-full space-y-2 pb-6">
       <Hero />
-    </main>
+      <About />
+      <Skills />
+      <Projects repos={repos} />
+      <Process />
+      <Contact />
+    </div>
   );
 }
+
