@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -13,6 +13,46 @@ const Navbar = () => {
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement | null>(null);
+
+  // Close mobile menu on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
+  // Close mobile menu on outside click or touch
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent | TouchEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleOutsideClick);
+      document.addEventListener("touchstart", handleOutsideClick);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("touchstart", handleOutsideClick);
+    };
+  }, [isOpen]);
+
+  // Auto-close menu if screen width expands to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768 && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,22 +86,43 @@ const Navbar = () => {
       setActiveSection(id);
       const target = document.getElementById(id);
       if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-        window.history.pushState(null, "", href);
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 30);
+        if (window.location.hash !== href) {
+          window.history.pushState(null, "", href);
+        }
       }
     }
   };
 
   return (
-    <header className="sticky top-3 z-50 w-full px-3 sm:px-6 pt-2">
-      <nav
-        aria-label="Primary Navigation"
-        className={`max-w-[1140px] mx-auto rounded-[22px] transition-all duration-300 ${
-          scrolled
-            ? "bg-white/80 backdrop-blur-2xl border border-white/90 shadow-[0_12px_36px_-8px_rgba(79,70,229,0.1)]"
-            : "bg-white/65 backdrop-blur-xl border border-white/80 shadow-[0_8px_28px_-6px_rgba(15,23,42,0.05)]"
-        }`}
-      >
+    <>
+      {/* Mobile Backdrop Overlay to dismiss on outside tap */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+            className="md:hidden fixed inset-0 z-40 bg-slate-900/15 backdrop-blur-[2px]"
+          />
+        )}
+      </AnimatePresence>
+
+      <header className="sticky top-3 z-50 w-full px-3 sm:px-6 pt-2">
+        <nav
+          ref={navRef}
+          aria-label="Primary Navigation"
+          className={`relative max-w-[1140px] mx-auto rounded-[22px] transition-all duration-300 ${
+            scrolled
+              ? "bg-white/80 backdrop-blur-2xl border border-white/90 shadow-[0_12px_36px_-8px_rgba(79,70,229,0.1)]"
+              : "bg-white/65 backdrop-blur-xl border border-white/80 shadow-[0_8px_28px_-6px_rgba(15,23,42,0.05)]"
+          }`}
+        >
         <div className="px-4 sm:px-6 h-16 sm:h-[70px] flex items-center justify-between gap-4">
           {/* Brand / Logo Left */}
           <Link
@@ -144,15 +205,15 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer: Floating glass dropdown card */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className="md:hidden overflow-hidden border-t border-slate-200/60 px-4 pb-4 pt-2"
+              initial={{ opacity: 0, y: -6, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, scale: 0.98 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="md:hidden absolute top-[calc(100%+8px)] left-0 right-0 rounded-[24px] bg-white/95 backdrop-blur-2xl border border-white/90 shadow-[0_20px_45px_-10px_rgba(79,70,229,0.18)] p-3 z-50 overflow-hidden"
             >
               <div className="flex flex-col gap-1">
                 {navLinks.map((link) => {
@@ -160,37 +221,38 @@ const Navbar = () => {
                   const resolvedHref =
                     pathname === "/" ? link.href : `/${link.href}`;
                   return (
-                    <Link
+                    <a
                       key={link.name}
                       href={resolvedHref}
                       onClick={(e) => handleNavClick(e, link.href, link.id)}
-                      className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-colors flex items-center justify-between ${
+                      className={`px-4 py-3 rounded-xl text-sm font-medium transition-colors flex items-center justify-between cursor-pointer ${
                         isActive
-                          ? "bg-white text-indigo-600 font-semibold shadow-sm border border-slate-100"
-                          : "text-slate-600 hover:bg-white/60 hover:text-slate-900"
+                          ? "bg-indigo-50/80 text-indigo-600 font-semibold border border-indigo-100/70 shadow-2xs"
+                          : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                       }`}
                     >
                       <span>{link.name}</span>
                       {isActive && (
                         <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
                       )}
-                    </Link>
+                    </a>
                   );
                 })}
-                <Link
+                <a
                   href={pathname === "/" ? "#contact" : "/#contact"}
                   onClick={(e) => handleNavClick(e, "#contact", "contact")}
-                  className="mt-2 w-full inline-flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-2.5 px-4 text-sm font-semibold shadow-sm transition-all"
+                  className="mt-2 w-full inline-flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl py-3 px-4 text-sm font-semibold shadow-sm transition-all cursor-pointer"
                 >
                   <span>Let&apos;s Talk</span>
                   <ArrowUpRight className="w-4 h-4" />
-                </Link>
+                </a>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </nav>
     </header>
+  </>
   );
 };
 

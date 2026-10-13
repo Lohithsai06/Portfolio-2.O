@@ -709,7 +709,10 @@ const Projects = ({ repos: initialRepos }: ProjectsProps) => {
     : null;
 
   return (
-    <section id="projects" className="w-full px-3 sm:px-6 py-2.5">
+    <section
+      id="projects"
+      className="w-full px-3 sm:px-6 py-2.5 scroll-mt-24 sm:scroll-mt-28"
+    >
       <div className="max-w-[1140px] mx-auto glass-panel rounded-[32px] p-5 sm:p-10 lg:p-12">
         {/* Header Row matching FEATURED PROJECTS / Selected Work */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
